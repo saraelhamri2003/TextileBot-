@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.9.0
+    container_name: textilebot-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  backend:
+    build: ./backend
+    container_name: textilebot-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./data/textilebot.db
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - USE_LOCAL_LLM=true
+      - LLM_MODEL_ID=google/flan-t5-small
+    volumes:
+      - backend_data:/app/data
+    depends_on:
+      - qdrant
+
+  frontend:
+    build: ./frontend
+    container_name: textilebot-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  qdrant_data:
+  backend_data:

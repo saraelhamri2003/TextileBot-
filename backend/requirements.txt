@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+sqlalchemy
+aiosqlite
+pydantic
+pydantic-settings
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+qdrant-client
+pypdf
+python-docx
+reportlab
+bcrypt
+ollama
+openai
